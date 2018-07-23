@@ -4,8 +4,8 @@ provider "aws" {
   region     = "${var.region}"
 }
 
-module "remote_state" {
-  source = "../modules/remote_state"
+module "remote-state" {
+  source = "../modules/remote-state"
   environment = "${var.environment}"
 }
 
