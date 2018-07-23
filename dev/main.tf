@@ -6,12 +6,12 @@ provider "aws" {
 
 module "remote-state" {
   source = "../modules/remote-state"
-  environment = "${var.environment}"
+  cluster-name = "${var.cluster-name}"
 }
 
 module "vpc" {
   source = "../modules/vpc"
-  cidr = "${var.vpc_cidr}"
+  vpc_cidr = "${var.vpc_cidr}"
 }
 
 module "eks-cluster" {
