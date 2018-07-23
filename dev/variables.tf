@@ -33,3 +33,9 @@ variable "desired_capacity" {
   default = 2
   type    = "string"
 }
+
+variable "instance_type" {
+  default = 2
+  type    = "string"
+}
+
