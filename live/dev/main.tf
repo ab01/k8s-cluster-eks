@@ -1,29 +1,34 @@
-provider "aws" {
-  access_key = "${var.access_key}"
-  secret_key = "${var.secret_key}"
-  region     = "${var.region}"
-}
+#provider "aws" {
+#  access_key = "${var.access_key}"
+#  secret_key = "${var.secret_key}"
+#  region     = "${var.region}"
+#}
 
 module "remote-state" {
   source = "../modules/remote-state"
-  environment = "${var.environment}"
+  cluster-name = "${var.cluster-name}"
 }
 
 module "vpc" {
   source = "../modules/vpc"
-  cidr = "${var.vpc_cidr}"
+  cidr_block = "${var.vpc_cidr}"
+  cluster-name = "${var.cluster-name}"
+
 }
 
 module "eks-cluster" {
   source = "../modules/eks-cluster"
   cluster-name = "${var.cluster-name}"
-  vpc_id = "${module.vpc.vpc_id}"
-  subnet_ids = ["${module.vpc.public_subnet_ids.*.id}"]
+  vpc_id = "${var.vpc_id}"
+  subnet_ids = "${var.subnet_ids}"
+  sg-env-node-id = "${module.eks-worker.env_security_group_id}"
 }
 
 module "eks-worker" {
   source = "../modules/eks-worker"
   cluster-name = "${var.cluster-name}"
+  vpc_id = "${var.vpc_id}"
+  sg-env-cluster-id = "${module.eks-cluster.env_security_group_id}"
   instance_type = "${var.instance_type}"
   key_name = "${key_name}"
   desired_capacity     = "${var.desired_capacity}"

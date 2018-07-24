@@ -66,17 +66,17 @@ output "user" {
   value = "${var.user}"
 }
 
-output "endpoint" {
-  value = "${aws_eks_cluster.hashihang.endpoint}"
-}
+#output "endpoint" {
+#  value = "${aws_eks_cluster.environment.endpoint}"
+#}
 
-output "ca-cert" {
-  value = "${aws_eks_cluster.hashihang.certificate_authority.0.data}"
-}
+#output "ca-cert" {
+#  value = "${aws_eks_cluster.environment.certificate_authority.0.data}"
+#}
 
-output "iam-role-arn" {
-  value = "${aws_iam_role.hashihang-node.arn}"
-}
+#output "iam-role-arn" {
+#  value = "${aws_iam_role.environment-node.arn}"
+#}
 
 output "zREADME" {
   value = <<README
