@@ -31,6 +31,6 @@ variable "vpc_id" {
   type    = "string"
 }
 
-variable "sg-environment-cluster-id" {
+variable "sg-env-cluster-id" {
   type    = "string"
 }

@@ -56,7 +56,8 @@ resource "aws_security_group_rule" "environment-cluster-ingress-node-https" {
   from_port                = 443
   protocol                 = "tcp"
   security_group_id        = "${aws_security_group.environment-cluster.id}"
-  source_security_group_id = "${aws_security_group.environment-node.id}"
+  #source_security_group_id = "${aws_security_group.environment-node.id}"
+  source_security_group_id = "${var.sg-env-node-id}"
   to_port                  = 443
   type                     = "ingress"
 }

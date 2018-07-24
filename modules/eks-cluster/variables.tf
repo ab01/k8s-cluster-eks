@@ -11,3 +11,7 @@ variable "subnet_ids" {
   type = "list"
   default = []
 }
+
+variable "sg-env-node-id" {
+  type = "string"
+}

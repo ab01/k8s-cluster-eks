@@ -20,14 +20,15 @@ module "eks-cluster" {
   source = "../modules/eks-cluster"
   cluster-name = "${var.cluster-name}"
   vpc_id = "${var.vpc_id}"
-  subnet_id = "${var.subnet_ids}"
+  subnet_ids = "${var.subnet_ids}"
+  sg-env-node-id = "${module.eks-worker.env_security_group_id}"
 }
 
 module "eks-worker" {
   source = "../modules/eks-worker"
   cluster-name = "${var.cluster-name}"
   vpc_id = "${var.vpc_id}"
-  source_security_group_id = "${var.sg-environment-cluster-id}"
+  sg-env-cluster-id = "${module.eks-cluster.env_security_group_id}"
   instance_type = "${var.instance_type}"
   key_name = "${key_name}"
   desired_capacity     = "${var.desired_capacity}"
