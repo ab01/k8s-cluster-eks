@@ -11,19 +11,22 @@ module "remote-state" {
 
 module "vpc" {
   source = "../modules/vpc"
-  vpc_cidr = "${var.vpc_cidr}"
+  cidr_block = "${var.vpc_cidr}"
+  cluster-name = "${var.cluster-name}"
+
 }
 
 module "eks-cluster" {
   source = "../modules/eks-cluster"
   cluster-name = "${var.cluster-name}"
-  vpc_id = "${module.vpc.vpc_id}"
-  subnet_ids = ["${module.vpc.public_subnet_ids.*.id}"]
+  vpc_id = "${var.vpc_id}"
+  subnet_id = "${var.subnet_ids}"
 }
 
 module "eks-worker" {
   source = "../modules/eks-worker"
   cluster-name = "${var.cluster-name}"
+  vpc_id = "${var.vpc_id}"
   instance_type = "${var.instance_type}"
   key_name = "${key_name}"
   desired_capacity     = "${var.desired_capacity}"

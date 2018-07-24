@@ -77,7 +77,7 @@ resource "aws_eks_cluster" "environment" {
 
   vpc_config {
     security_group_ids = ["${aws_security_group.environment-cluster.id}"]
-    subnet_ids         = ["${aws_subnet.environment.*.id}"]
+    subnet_ids = ["${var.subnet_ids}"]
   }
 
   depends_on = [

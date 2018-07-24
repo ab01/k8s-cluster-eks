@@ -26,3 +26,7 @@ variable "subnet_id" {
   type = "list"
   default = []
 }
+
+variable "vpc_id" {
+  type    = "string"
+}

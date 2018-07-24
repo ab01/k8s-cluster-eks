@@ -48,7 +48,7 @@ resource "aws_iam_instance_profile" "environment-node" {
 resource "aws_security_group" "environment-node" {
   name        = "terraform-eks-environment-node"
   description = "Security group for all nodes in the cluster"
-  vpc_id      = "${aws_vpc.environment.id}"
+  vpc_id      = "${var.vpc_id}"
 
   egress {
     from_port   = 0
