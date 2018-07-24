@@ -80,7 +80,7 @@ resource "aws_security_group_rule" "environment-node-ingress-cluster" {
   from_port                = 1025
   protocol                 = "tcp"
   security_group_id        = "${aws_security_group.environment-node.id}"
-  source_security_group_id = "${aws_security_group.environment-cluster.id}"
+  source_security_group_id = "${var.sg-environment-cluster-id}"
   to_port                  = 65535
   type                     = "ingress"
 }

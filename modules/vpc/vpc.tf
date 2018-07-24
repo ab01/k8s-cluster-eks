@@ -19,12 +19,28 @@ resource "aws_vpc" "environment" {
   }"
 }
 
-resource "aws_subnet" "environment" {
-  count = 2
+#resource "aws_subnet" "environment" {
+#  count = 2
+#
+#  availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
+#  cidr_block        = "10.0.${count.index}.0/24"
+#  vpc_id            = "${aws_vpc.environment.id}"
+#
+#  tags = "${
+#    map(
+#     "Name", "terraform-eks-environment-node",
+#     "kubernetes.io/cluster/${var.cluster-name}", "shared",
+#    )
+#  }"
+#}
 
-  availability_zone = "${data.aws_availability_zones.available.names[count.index]}"
-  cidr_block        = "10.0.${count.index}.0/24"
-  vpc_id            = "${aws_vpc.environment.id}"
+resource "aws_subnet" "environment" {
+  depends_on              = ["aws_vpc.environment"]
+  vpc_id                  = "${aws_vpc.environment.id}"
+  count                   = "${length(var.public_subnet_cidr)}"
+  cidr_block              = "${element(var.public_subnet_cidr, count.index)}"
+  availability_zone       = "${element(var.availability_zones, count.index)}"
+  map_public_ip_on_launch = true
 
   tags = "${
     map(
@@ -33,6 +49,8 @@ resource "aws_subnet" "environment" {
     )
   }"
 }
+
+
 
 resource "aws_internet_gateway" "environment" {
   vpc_id = "${aws_vpc.environment.id}"
@@ -51,9 +69,15 @@ resource "aws_route_table" "environment" {
   }
 }
 
-resource "aws_route_table_association" "environment" {
-  count = 2
+#resource "aws_route_table_association" "environment" {
+#  count = 2
+#
+#  subnet_id      = "${aws_subnet.environment.*.id[count.index]}"
+#  route_table_id = "${aws_route_table.environment.id}"
+#}
 
-  subnet_id      = "${aws_subnet.environment.*.id[count.index]}"
+resource "aws_route_table_association" "environment" {
+  count          = "${length(var.public_subnet_cidr)}"
+  subnet_id      = "${element(aws_subnet.environment.*.id, count.index)}"
   route_table_id = "${aws_route_table.environment.id}"
 }

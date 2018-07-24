@@ -27,6 +27,7 @@ module "eks-worker" {
   source = "../modules/eks-worker"
   cluster-name = "${var.cluster-name}"
   vpc_id = "${var.vpc_id}"
+  source_security_group_id = "${var.sg-environment-cluster-id}"
   instance_type = "${var.instance_type}"
   key_name = "${key_name}"
   desired_capacity     = "${var.desired_capacity}"
