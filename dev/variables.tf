@@ -17,7 +17,6 @@ variable "user" {
   type    = "string"
 }
 
-variable "vpc_cidr" {}
 
 variable "max_size" {
   default = 2
@@ -44,10 +43,18 @@ variable "subnet_ids" {
   default = []
 }
 
-variable "vpc_id" {
-  type    = "string"
+variable "availability_zones" {
+  type = "list"
+  default = ["us-east-1a", "us-east-1b"]
 }
 
-variable "sg-environment-cluster-id" {
-  type    = "string"
+variable "cidr_block" {
+  default = "10.7.0.0/16"
 }
+
+variable "public_cidr_block" {
+  type = "list"
+  default = ["10.7.1.0/24", "10.7.3.0/24"]
+}
+
+

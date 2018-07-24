@@ -11,7 +11,9 @@ module "remote-state" {
 
 module "vpc" {
   source = "../modules/vpc"
-  cidr_block = "${var.vpc_cidr}"
+  cidr_block = "${var.cidr_block}"
+  availability_zones = "${var.availability_zones}"
+  public_subnet_cidr = "${var.public_cidr_block}"
   cluster-name = "${var.cluster-name}"
 
 }
@@ -19,7 +21,7 @@ module "vpc" {
 module "eks-cluster" {
   source = "../modules/eks-cluster"
   cluster-name = "${var.cluster-name}"
-  vpc_id = "${var.vpc_id}"
+  vpc_id = "${module.vpc.vpc_id}"
   subnet_ids = "${var.subnet_ids}"
   sg-env-node-id = "${module.eks-worker.env_security_group_id}"
 }
@@ -27,7 +29,7 @@ module "eks-cluster" {
 module "eks-worker" {
   source = "../modules/eks-worker"
   cluster-name = "${var.cluster-name}"
-  vpc_id = "${var.vpc_id}"
+  vpc_id = "${module.vpc.vpc_id}"
   sg-env-cluster-id = "${module.eks-cluster.env_security_group_id}"
   instance_type = "${var.instance_type}"
   key_name = "${key_name}"
